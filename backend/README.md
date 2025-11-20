@@ -22,6 +22,11 @@ API endpoints:
 - `POST /api/boards/:id/lists` - add list
 - `POST /api/boards/:id/cards` - add card
 - `GET /api/recommendations/:boardId` - get recommendations for a board
+
+Environment / live DB notes:
+- The backend reads the database connection from `backend/.env` using the `MONGODB_URI` variable. If you provided a live connection string in `backend/.env`, the server will use that when it starts.
+- Do NOT commit your `backend/.env` file; it is ignored by `.gitignore` to avoid exposing credentials.
+
 Authentication endpoints:
 - `POST /api/auth/register` - register { email, password, name }
 - `POST /api/auth/login` - login { email, password }

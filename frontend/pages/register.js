@@ -10,11 +10,19 @@ export default function Register(){
 
   async function submit(e){
     e.preventDefault();
-    const res = await api.post('/api/auth/register', { email, password, name });
-    if (res.data.token){
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      router.push('/');
+    try{
+      const res = await api.post('/api/auth/register', { email, password, name });
+      if (res.data?.token){
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        router.push('/');
+      } else {
+        alert('Registration failed: no token returned');
+      }
+    } catch (err){
+      console.error('Register error', err?.response || err.message || err);
+      const msg = err?.response?.data?.error || err?.response?.statusText || err.message || 'Unknown error';
+      alert('Registration failed: ' + msg);
     }
   }
 

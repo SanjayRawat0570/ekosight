@@ -16,9 +16,19 @@ export default function Home(){
 
   async function createBoard(){
     if(!title) return;
-    await api.post(`/api/boards`, { title });
-    setTitle('');
-    fetchBoards();
+    try{
+      await api.post(`/api/boards`, { title });
+      setTitle('');
+      fetchBoards();
+    } catch (err){
+      console.error('Create board error', err?.response || err.message || err);
+      if (err?.response?.status === 401){
+        // not authenticated
+        if (confirm('You must be logged in to create a board. Go to login page?')) window.location.href = '/login';
+        return;
+      }
+      alert('Failed to create board: ' + (err?.response?.data?.error || err.message || 'Unknown error'));
+    }
   }
 
   function logout(){ localStorage.removeItem('token'); localStorage.removeItem('user'); setUser(null); }
@@ -35,8 +45,8 @@ export default function Home(){
             </>
           ) : (
             <>
-              <Link href="/login"><a style={{ marginRight: 8 }}>Login</a></Link>
-              <Link href="/register"><a>Register</a></Link>
+              <Link href="/login" style={{ marginRight: 8 }}>Login</Link>
+              <Link href="/register">Register</Link>
             </>
           )}
         </div>
@@ -61,7 +71,7 @@ function BoardCard({ board }){
       <h3>{board.title}</h3>
       <div style={{ fontSize: 13, color: '#666' }}>Lists: {board.lists?.length || 0} • Cards: {board.cards?.length || 0}</div>
       <div style={{ marginTop: 8 }}>
-        <Link href={`/board/${board._id}`}><a>Open Board</a></Link>
+        <Link href={`/board/${board._id}`}>Open Board</Link>
       </div>
     </div>
   )
