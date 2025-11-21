@@ -10,8 +10,14 @@ export default function Home(){
   useEffect(()=>{ fetchBoards(); const u = localStorage.getItem('user'); if(u) setUser(JSON.parse(u)); },[]);
 
   async function fetchBoards(){
-    const res = await api.get(`/api/boards`);
-    setBoards(res.data);
+    try{
+      const res = await api.get(`/api/boards`);
+      setBoards(res.data);
+    } catch (err){
+      console.error('Fetch boards error', err?.response || err.message || err);
+      alert('Failed to fetch boards: ' + (err?.response?.data?.error || err.message || 'Network Error'));
+      setBoards([]);
+    }
   }
 
   async function createBoard(){
