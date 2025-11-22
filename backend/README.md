@@ -39,7 +39,7 @@ API endpoints (summary)
 Security
 - Protected endpoints require a JWT in the `Authorization: Bearer <token>` header. Tokens are issued by `/api/auth/login` and `/api/auth/register`.
 
-Architecture (plain language)
+Architecture :
 - The backend is a small Express application that stores boards, lists, and cards in MongoDB using Mongoose. Authentication is handled with JWT tokens. The recommendations feature runs on the server: it analyzes card titles and descriptions and returns suggested due dates, suggested list movements, and related card groups.
 
 Database schema (overview)
@@ -65,17 +65,15 @@ Features (concise)
 - Collaboration (mini): invite member by email (adds to board members list)
 - Smart Recommendations: for each board, server provides suggested due dates, suggested list moves, and related-card groups
 
-Troubleshooting
-- If your frontend shows "Network Error", confirm the frontend's `NEXT_PUBLIC_API_URL` points to the backend URL and that the backend is reachable. Example:
+
 
 ```bash
 curl https://ekosight.onrender.com/api/boards
 ```
 
-If you see authentication errors (401), ensure you are including a valid JWT in the `Authorization` header.
-# Backend (Express + MongoDB)
 
-Quick start (local)
+
+Quick start 
 
 1. Copy .env and set `MONGODB_URI` and `JWT_SECRET`.
 
@@ -100,13 +98,12 @@ API endpoints (summary)
 - `GET /api/recommendations/:boardId` — get recommendations for a board
 - `GET /api/recommendations/:boardId/debug` — debug output (tokenization, detected matches)
 
-Security
-- Protected endpoints require a JWT in the `Authorization: Bearer <token>` header. Tokens are issued by `/api/auth/login` and `/api/auth/register`.
+
 
 Architecture 
 - The backend is a small Express app that stores boards, lists and cards in MongoDB using Mongoose. Authentication is handled by JWTs. Recommendation logic is implemented server‑side: the recommendations endpoint analyzes card text to suggest due dates, list moves, and related cards.
 
-Database schema (overview)
+Database schema 
 - `Board` (single collection) — stores:
   - `title`: string
   - `lists`: array of embedded list objects { title, position }
